@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ExpenseManager</string>
+    <string name="title_home">Home</string>
+    <string name="title_category">Category</string>
+    <string name="title_expenses">Expenses</string>
+    <string name="title_account">Account</string>
+    <string name="wallet_balance">Wallet Balance:</string>
+
+</resources>
