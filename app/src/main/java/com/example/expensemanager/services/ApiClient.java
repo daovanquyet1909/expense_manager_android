@@ -27,8 +27,9 @@ public class ApiClient {
                 }
             }).build();
 
+            // Sử dụng đúng IP và cổng của server
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.31.120:5001/api/") // Ensure this ends with /
+                    .baseUrl("https://be-expense-asm.onrender.com/api/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
