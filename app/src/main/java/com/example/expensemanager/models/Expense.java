@@ -3,7 +3,7 @@ package com.example.expensemanager.models;
 public class Expense {
     private String id;
     private double amount;
-    private String category;
+    private Category category_id;  // Now it's an object of Category
     private String date;
     private String note;
 
@@ -14,8 +14,8 @@ public class Expense {
     public double getAmount() { return amount; }
     public void setAmount(double amount) { this.amount = amount; }
 
-    public String getCategory() { return category; }
-    public void setCategoryId(String category) { this.category = category; }
+    public Category getCategory() { return category_id; }
+    public void setCategory(Category category_id) { this.category_id = category_id; }
 
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }

@@ -27,7 +27,6 @@ public class ApiClient {
                 }
             }).build();
 
-            // Sử dụng đúng IP và cổng của server
             retrofit = new Retrofit.Builder()
                     .baseUrl("https://be-expense-asm.onrender.com/api/")
                     .client(okHttpClient)

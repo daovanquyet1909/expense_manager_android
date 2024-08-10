@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://192.168.31.21:5001/api/"; // Đảm bảo có dấu "/" ở cuối
+    private static final String BASE_URL = "http://192.168.2.186:3050/api/"; // Đảm bảo có dấu "/" ở cuối
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

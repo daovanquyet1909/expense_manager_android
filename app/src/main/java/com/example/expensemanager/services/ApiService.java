@@ -21,6 +21,7 @@ public interface ApiService {
 
     @POST("auth/register")
     Call<User> registerUser(@Body User user);
+
     @GET("auth/profile")
     Call<User> getUserProfile();
 
@@ -39,15 +40,17 @@ public interface ApiService {
     @GET("wallet")
     Call<Wallet> getWalletBalance();
 
-    @GET("expenses")
-    Call<List<Expense>> getExpenses();
-
     @GET("wallets")
     Call<List<Wallet>> getWallets();
 
     @PUT("wallets")
     Call<Wallet> updateWalletBalance(@Body Wallet wallet);
 
+    @GET("expenses")
+    Call<List<Expense>> getExpenses();
+
+    @GET("expenses/{id}")
+    Call<Expense> getExpenseById(@Path("id") String id);
 
     @POST("expenses")
     Call<Expense> addExpense(@Body Expense expense);
@@ -57,7 +60,4 @@ public interface ApiService {
 
     @DELETE("expenses/{id}")
     Call<Void> deleteExpense(@Path("id") String id);
-
-
-
 }

@@ -1,67 +1,62 @@
 package com.example.expensemanager.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.expensemanager.R;
-import com.example.expensemanager.databinding.FragmentExpenseBinding;
+import com.example.expensemanager.adapters.ExpenseAdapter;
 import com.example.expensemanager.models.Expense;
-import com.example.expensemanager.services.ApiClient;
-import com.example.expensemanager.services.ApiService;
 import com.example.expensemanager.viewmodels.ExpenseViewModel;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class ExpenseFragment extends Fragment {
 
-    private FragmentExpenseBinding binding;
     private ExpenseViewModel expenseViewModel;
+    private ExpenseAdapter expenseAdapter;
+    private RecyclerView recyclerView;
+    private TextView emptyView;
 
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_expense, container, false);
+
         expenseViewModel = new ViewModelProvider(this).get(ExpenseViewModel.class);
-        binding = FragmentExpenseBinding.inflate(inflater, container, false);
-        binding.setViewModel(expenseViewModel);
-        binding.setLifecycleOwner(this);
+        expenseAdapter = new ExpenseAdapter();
+        recyclerView = view.findViewById(R.id.recyclerViewExpenses);
+        emptyView = view.findViewById(R.id.empty_view);
 
-        // Fetch and display expenses
-        fetchExpenses();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(expenseAdapter);
 
-        return binding.getRoot();
-    }
-
-    private void fetchExpenses() {
-        ApiService apiService = ApiClient.getClient(getContext()).create(ApiService.class);
-        Call<List<Expense>> call = apiService.getExpenses();
-        call.enqueue(new Callback<List<Expense>>() {
+        expenseViewModel.getExpenses().observe(getViewLifecycleOwner(), new Observer<List<Expense>>() {
             @Override
-            public void onResponse(Call<List<Expense>> call, Response<List<Expense>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Expense> expenses = response.body();
-                    expenseViewModel.setExpenses(expenses);
+            public void onChanged(List<Expense> expenses) {
+                if (expenses != null && !expenses.isEmpty()) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                    expenseAdapter.setExpenses(expenses);
                 } else {
-                    // Handle errors here if needed
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void onFailure(Call<List<Expense>> call, Throwable t) {
-                // Handle failure here
-                Toast.makeText(getContext(), "Failed to fetch expenses", Toast.LENGTH_SHORT).show();
-            }
         });
+
+        // Fetch expenses from the ViewModel
+        expenseViewModel.fetchExpenses(getContext());
+
+        return view;
     }
 }

@@ -5,10 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.expensemanager.R;
 import com.example.expensemanager.models.Expense;
+
 import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
@@ -41,7 +44,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         Expense expense = expenses.get(position);
         holder.textViewAmount.setText(String.format("$%.2f", expense.getAmount()));
-        holder.textViewCategory.setText(expense.getCategory());
+        holder.textViewCategory.setText(expense.getCategory().getName());  // Display the category name
         holder.textViewDate.setText(expense.getDate());
         holder.textViewNote.setText(expense.getNote());
 
